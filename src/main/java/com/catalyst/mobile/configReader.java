@@ -26,5 +26,28 @@ public class configReader {
         }
         return value;
     }
-    
+
+     public static String getIpAddress() {
+	        return getProperty("ipAddress");
+	    }
+	  
+	  public static String getDeviceName() {
+	        return getProperty("deviceName");
+	    }
+	  
+	  public static String getPlatformAndroid() {
+	        return getProperty("platformAndroid");
+	    }
+	  
+	  public static String getChromeDriverExecutable() {
+	        return getProperty("chromeDriverExecutable");
+	    }
+	  
+	  public static String getAppAndroid() {
+	        return getProperty("appAndroid");
+	    }
+	  
+	  public static String getTime() {
+	        return getProperty("time");
+	    }
 }

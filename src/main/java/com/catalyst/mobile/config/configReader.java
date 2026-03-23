@@ -1,4 +1,4 @@
-package com.catalyst.mobile;
+package com.catalyst.mobile.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class configReader {
      private static Properties properties;
-    private static final String CONFIG_PATH = "src/test/resources/properties/config.properties";
+    private static final String CONFIG_PATH = "D:\\NewMobileFramework\\BusyProject\\src\\test\\java\\com\\resources\\config.properties";
 
        static {
         try {
@@ -50,4 +50,13 @@ public class configReader {
 	  public static String getTime() {
 	        return getProperty("time");
 	    }
+
+        public static String getAppIOS() {
+                return getProperty("appIos");
+        }
+        
+        public static String getPlatform() {
+                return getProperty("platform");
+        }
+
 }

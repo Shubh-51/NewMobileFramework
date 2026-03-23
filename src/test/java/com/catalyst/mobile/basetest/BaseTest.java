@@ -14,37 +14,27 @@ import com.catalyst.mobile.config.configReader;
 
 public class BaseTest {
 
-    // @BeforeSuite
-    // public void startAppiumServer() {
-    //     DriverFactory.startServer();
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(BaseTest.class);
+
+    //  @BeforeSuite
+    // public void beforeSuite() {
+    //      logger.info("Starting Appium server before suite");
+    //      DriverFactory.startServer();
     // }
 
     @BeforeMethod
     public void setup() throws MalformedURLException, URISyntaxException {
-
-        // 1. Try from terminal
-        String platform = System.getProperty("platform");
-
-        // 2. Fallback to config.properties
-        if (platform == null || platform.isEmpty()) {
-            platform = configReader.getPlatform(); // create this method
-        }
-
-        // 3. Default fallback
+        String platform = System.getProperty("platform", configReader.getPlatform());
         if (platform == null || platform.isEmpty()) {
             platform = "android";
         }
 
-        System.out.println("Final Platform → " + platform);
+        logger.info("Final Platform → {}", platform);
 
         DriverFactory.initializeDriver(platform);
 
-        int timeout = Integer.parseInt(configReader.getTime());
-
-        DriverFactory.getDriver()
-                .manage()
-                .timeouts()
-                .implicitlyWait(Duration.ofSeconds(timeout));
+        int timeout = configReader.getTime();
+        DriverFactory.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
     }
 
     @AfterMethod
@@ -52,8 +42,9 @@ public class BaseTest {
         DriverFactory.quitDriver();
     }
 
-    // @AfterSuite
-    // public void stopServer() {
-    //     DriverFactory.stopServer();
+    //  @AfterSuite
+    //  public void afterSuite() {
+    //      logger.info("Stopping Appium server after suite");
+    //      DriverFactory.stopServer();
     // }
 }

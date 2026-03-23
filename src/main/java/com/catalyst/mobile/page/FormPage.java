@@ -11,56 +11,54 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class FormPage extends BasePage {
 
-   AppiumDriver driver;
-	
-	public FormPage(AppiumDriver driver) {
-		super(driver);
-		this.driver=driver;
-	}
-	
-	@AndroidFindBy(id="com.androidsample.generalstore:id/nameField")
-	private WebElement nameInput;
-	
-	@AndroidFindBy(id="com.androidsample.generalstore:id/radioFemale")
-	private WebElement femaleRadioBtn;
-	
-	@AndroidFindBy(id="com.androidsample.generalstore:id/radioMale")
-	private WebElement maleRadioBtn;
-	
-	@AndroidFindBy(id="com.androidsample.generalstore:id/spinnerCountry")
-	private WebElement countryDropdown;
-	
-	@AndroidFindBy(xpath="//android.widget.Button[@resource-id='com.androidsample.generalstore:id/btnLetsShop']")
-	private WebElement letsShopBtn;
-	
-	@AndroidFindBy(xpath="//android.widget.TextView[@text=\"Pump Controller\"]")
-	private WebElement pumpControllerText;
-	
-	public void setNameInput(String name) {
-		nameInput.sendKeys(name);
-	}
-	
-	public void selectGendar(String gender) {
-		if(gender.contains("female")) {
-			femaleRadioBtn.click();
-		}else {
-			femaleRadioBtn.click();
-		}
-	}
-	
-	public void selectCountryFromDropdown(String countryName) {
-		countryDropdown.click();
-		scrollToText(countryName);
-		driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\""+countryName+"\"]")).click();
-	}
-	
-	public void submitForm() throws InterruptedException {
-	 	letsShopBtn.click();
-	 	Thread.sleep(2000);
-	 //return new ProductCatalougePage(driver);
-	 }
-	
-	public void startActivity() {
+    public FormPage(AppiumDriver driver) {
+        super(driver);
+    }
+
+    @AndroidFindBy(id = "com.androidsample.generalstore:id/nameField")
+    private WebElement nameInput;
+
+    @AndroidFindBy(id = "com.androidsample.generalstore:id/radioFemale")
+    private WebElement femaleRadioBtn;
+
+    @AndroidFindBy(id = "com.androidsample.generalstore:id/radioMale")
+    private WebElement maleRadioBtn;
+
+    @AndroidFindBy(id = "com.androidsample.generalstore:id/spinnerCountry")
+    private WebElement countryDropdown;
+
+    @AndroidFindBy(xpath = "//android.widget.Button[@resource-id='com.androidsample.generalstore:id/btnLetsShop']")
+    private WebElement letsShopBtn;
+
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Pump Controller\"]")
+    private WebElement pumpControllerText;
+
+    public void setNameInput(String name) {
+        sendKeys(nameInput, name);
+    }
+
+    public void selectGender(String gender) {
+        if ("female".equalsIgnoreCase(gender)) {
+            clickElement(femaleRadioBtn);
+        } else if ("male".equalsIgnoreCase(gender)) {
+            clickElement(maleRadioBtn);
+        } else {
+            throw new IllegalArgumentException("Invalid gender: " + gender);
+        }
+    }
+
+    public void selectCountryFromDropdown(String countryName) {
+        clickElement(countryDropdown);
+        scrollToText(countryName);
+        WebElement countryOption = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text=\"" + countryName + "\"]"));
+        clickElement(countryOption);
+    }
+
+    public void submitForm() {
+        clickElement(letsShopBtn);
+    }
+
+	public void resetApp() {
 		((JavascriptExecutor)driver).executeScript("mobile: startActivity", ImmutableMap.of("intent",
 				"com.androidsample.generalstore/com.androidsample.generalstore.SplashActivity"
 				));	

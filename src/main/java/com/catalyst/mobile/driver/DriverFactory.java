@@ -17,76 +17,70 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 
 public class DriverFactory {
 
-    private static ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(DriverFactory.class);
+    private static final ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
     private static AppiumDriverLocalService service;
 
-    // START APPIUM SERVER
     public static void startServer() {
+        String appiumJs = System.getProperty("appium.js.path", "C:\\Users\\shubh\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js");
+        logger.info("Starting Appium server using {}", appiumJs);
 
-       service = new AppiumServiceBuilder()
-        .withAppiumJS(new File("C:\\Users\\shubh\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"))
-        .withIPAddress("127.0.0.1")
-        .usingPort(4723)
-        .build();
+        service = new AppiumServiceBuilder()
+            .withAppiumJS(new File(appiumJs))
+            .withIPAddress("127.0.0.1")
+            .usingPort(4723)
+            .build();
 
         service.start();
-
-        System.out.println("Appium Server Started → " + service.getUrl());
+        logger.info("Appium Server Started → {}", service.getUrl());
     }
 
-    // STOP APPIUM SERVER
     public static void stopServer() {
-
-        if (service != null) {
+        if (service != null && service.isRunning()) {
             service.stop();
-            System.out.println("Appium Server Stopped");
+            logger.info("Appium Server Stopped");
         }
     }
 
-    // INITIALIZE DRIVER
     public static void initializeDriver(String platform) throws MalformedURLException, URISyntaxException {
+        logger.info("initializeDriver called with platform: {}", platform);
+        if (platform == null || platform.isEmpty()) {
+            throw new IllegalArgumentException("Platform must not be null or empty");
+        }
 
         if (platform.equalsIgnoreCase("android")) {
-
             initializeAndroidDriver();
-
-        } 
-        else if (platform.equalsIgnoreCase("ios")) {
-
+        } else if (platform.equalsIgnoreCase("ios")) {
             initializeIOSDriver();
+        } else {
+            throw new IllegalArgumentException("Unsupported platform: " + platform);
         }
     }
 
     // ANDROID DRIVER
     private static void initializeAndroidDriver() throws MalformedURLException, URISyntaxException {
-         String ipAddress = System.getProperty("ipAddress") != null
-		        ? System.getProperty("ipAddress")
-		        : configReader.getIpAddress();
+        String ipAddress = System.getProperty("ipAddress", configReader.getIpAddress());
 
-        UiAutomator2Options options = new UiAutomator2Options();
-
-        options.setDeviceName(configReader.getDeviceName());
-        options.setPlatformName("Android");
-        options.setApp(configReader.getAppAndroid());
+        UiAutomator2Options options = new UiAutomator2Options()
+            .setDeviceName(configReader.getDeviceName())
+            .setPlatformName("Android")
+            .setApp(configReader.getAppAndroid());
 
         driver.set(new AndroidDriver(new URI(ipAddress).toURL(), options));
-
-        System.out.println("Android Driver Started");
+        logger.info("Android Driver Started on {}", ipAddress);
     }
 
-    // IOS DRIVER
-    private static void initializeIOSDriver() {
+    private static void initializeIOSDriver() throws MalformedURLException, URISyntaxException {
+        String ipAddress = System.getProperty("ipAddress", configReader.getIpAddress());
 
-        XCUITestOptions options = new XCUITestOptions();
+        XCUITestOptions options = new XCUITestOptions()
+            .setDeviceName("iPhone 13 Pro")
+            .setPlatformName("iOS")
+            .setPlatformVersion("15.5")
+            .setApp(configReader.getAppIOS());
 
-        options.setDeviceName("iPhone 13 Pro");
-        options.setPlatformName("iOS");
-        options.setPlatformVersion("15.5");
-        options.setApp(configReader.getAppIOS());
-
-        driver.set(new IOSDriver(service.getUrl(), options));
-
-        System.out.println("iOS Driver Started");
+        driver.set(new IOSDriver(new URI(ipAddress).toURL(), options));
+        logger.info("iOS Driver Started on {}", ipAddress);
     }
 
     // GET DRIVER

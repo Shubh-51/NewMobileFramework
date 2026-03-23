@@ -1,32 +1,28 @@
 package com.catalyst.mobile.logintest;
 
-import org.testng.Assert;
+import java.util.logging.Logger;
+
 import org.testng.annotations.Test;
 
 import com.catalyst.mobile.basetest.BaseTest;
 import com.catalyst.mobile.driver.DriverFactory;
 import com.catalyst.mobile.page.FormPage;
 
-import io.appium.java_client.AppiumBy;
-
 public class LoginTest extends BaseTest {
 
+	Logger logger = Logger.getLogger(LoginTest.class.getName());
     @Test
-	public void formTest() throws InterruptedException {
+    public void formTest() {
+		logger.info("Starting form test");
         FormPage form = new FormPage(DriverFactory.getDriver());
-		form.setNameInput("Swat");
-		form.selectGendar("female");
-		form.selectCountryFromDropdown("Australia");
-		//DriverFactory.getDriver().findElement(AppiumBy.id("com.androidsample.generalstore:id/btnLetsShop")).click();
-		Thread.sleep(3000);
-		form.submitForm();
-		
-		//How to handle Toast Msges in Phone
-		//Every Toast msges are developed by using tag //android.widget.Toast
-		//String name=DriverFactory.getDriver().findElement(AppiumBy.xpath("(//android.widget.Toast)[1]")).getAttribute("name");
-		//Assert.assertEquals(name, "Please enter your name");
+		logger.info("Filling form details");		
+        form.setNameInput("Swat");
+        form.selectGender("female");
+		logger.info("Selecting country from dropdown");
+        form.selectCountryFromDropdown("Australia");
+        form.submitForm();
+		logger.info("Form submitted successfully");	
 
-	}
-
-    
+       // org.testng.Assert.assertTrue(form.isPumpControllerVisible(), "Pump Controller should be visible after submit");
+    } 
 }

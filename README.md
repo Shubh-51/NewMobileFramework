@@ -28,6 +28,43 @@ This project is a mobile automation framework built with Appium + TestNG + Java 
 - `src/test/java/com/catalyst/mobile/basetest` - base test class
 - `src/test/java/com/catalyst/mobile/logintest` - test classes
 
+## Project Structure
+```
+BusyProject/
+├── pom.xml
+├── README.md
+├── testNG.xml
+├── apps/
+├── logs/
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── com/
+│   │           └── catalyst/
+│   │               └── mobile/
+│   │                   ├── config/
+│   │                   │   └── configReader.java
+│   │                   ├── driver/
+│   │                   │   └── DriverFactory.java
+│   │                   └── page/
+│   │                       ├── BasePage.java
+│   │                       └── FormPage.java
+│   └── test/
+│       ├── java/
+│       │   ├── com/
+│       │   │   └── catalyst/
+│       │   │       └── mobile/
+│       │   │           ├── basetest/
+│       │   │           │   └── BaseTest.java
+│       │   │           └── logintest/
+│       │   │               └── LoginTest.java
+│       │   └── resources/
+│       │       └── config.properties
+│       └── resources/
+│           ├── config.properties
+│           └── log4j2.xml
+```
+
 ## Notes
 - Use `-Dplatform=ios` or `-Dplatform=android` at runtime.
 - `log4j2.xml` controls logs.

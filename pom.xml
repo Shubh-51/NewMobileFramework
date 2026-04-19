@@ -26,14 +26,6 @@
       <version>10.0.0</version>
     </dependency>
 
-    <!-- TestNG -->
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>7.10.0</version>
-      <scope>test</scope>
-    </dependency>
-
     <!-- Selenium -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -72,6 +64,12 @@
       <groupId>com.aventstack</groupId>
       <artifactId>extentreports</artifactId>
       <version>5.1.1</version>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.11.0</version>
     </dependency>
   </dependencies>
 

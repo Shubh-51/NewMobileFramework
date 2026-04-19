@@ -1,4 +1,4 @@
-package com.catalyst.mobile.page;
+package com.catalyst.mobile.pages;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;

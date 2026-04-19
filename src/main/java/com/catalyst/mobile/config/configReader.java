@@ -1,29 +1,28 @@
 package com.catalyst.mobile.config;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 public class configReader {
-    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(configReader.class);
-    private static final java.util.Properties properties = new java.util.Properties();
-
+    private static  Properties properties = new Properties();
+    private static final String CONFIG_PATH = "D:\\NewMobileFramework\\BusyProject\\src\\test\\java\\com\\resources\\config.properties";
+    
     static {
-        try (java.io.InputStream input = configReader.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                logger.error("config.properties not found in classpath");
-                throw new RuntimeException("config.properties not found in classpath");
-            }
-            properties.load(input);
-            logger.info("Loaded config.properties successfully");
+        try {
+            properties = new Properties();
+            FileInputStream fis = new FileInputStream(CONFIG_PATH);
+            properties.load(fis);
+            fis.close();
         } catch (IOException e) {
-            logger.error("Could not read config.properties file", e);
-            throw new RuntimeException("Could not read config.properties file: " + e.getMessage(), e);
+            throw new RuntimeException("Could not read config.properties file: " + e.getMessage());
         }
     }
+
 
     public static String getProperty(String key) {
         String value = properties.getProperty(key);
         if (value == null) {
-            logger.error("Property {} not found in config.properties", key);
             throw new RuntimeException("Property " + key + " not found in config.properties");
         }
         return value;

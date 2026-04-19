@@ -91,13 +91,16 @@ public class DriverFactory {
 
     // QUIT DRIVER
     public static void quitDriver() {
-
-        if (driver.get() != null) {
-
-            driver.get().quit();
+        try {
+            AppiumDriver driverInstance = driver.get();
+            if (driverInstance != null) {
+                driverInstance.quit();
+                driver.remove();
+                logger.info("Driver Closed successfully");
+            }
+        } catch (Exception e) {
+            logger.warn("Error quitting driver: {}", e.getMessage());
             driver.remove();
-
-            System.out.println("Driver Closed");
         }
     }
 }

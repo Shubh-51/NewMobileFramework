@@ -6,18 +6,18 @@ import org.testng.annotations.Test;
 
 import com.catalyst.mobile.basetest.BaseTest;
 import com.catalyst.mobile.driver.DriverFactory;
-import com.catalyst.mobile.page.FormPage;
+import com.catalyst.mobile.pages.FormPage;
 
 public class LoginTest extends BaseTest {
 
-	Logger logger = Logger.getLogger(LoginTest.class.getName());
+	private static final Logger logger = Logger.getLogger(LoginTest.class.getName());
     @Test
     public void formTest() {
 		logger.info("Starting form test");
         FormPage form = new FormPage(DriverFactory.getDriver());
 		logger.info("Filling form details");		
         form.setNameInput("Swat");
-        form.selectGender("female");
+        form.selectGender("f");
 		logger.info("Selecting country from dropdown");
         form.selectCountryFromDropdown("Australia");
         form.submitForm();
